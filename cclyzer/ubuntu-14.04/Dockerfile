@@ -45,14 +45,11 @@ USER cclyzer
 WORKDIR /home/cclyzer
 
 COPY .emacs .emacs
+COPY cclyzer cclyzer
 
 USER root
-RUN chown -R cclyzer:cclyzer /home/cclyzer/.*
+RUN chown -R cclyzer:cclyzer /home/cclyzer/* /home/cclyzer/.*
 
 USER cclyzer
-
-RUN git clone https://github.com/plast-lab/cclyzer.git && \
-    cd cclyzer && \
-    git checkout v1.1.2
 
 ENV TERM xterm-256color

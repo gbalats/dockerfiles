@@ -1,3 +1,6 @@
 [submodule "cclyzer/fedora-23/cclyzer"]
 	path = cclyzer/fedora-23/cclyzer
 	url = git@github.com:plast-lab/cclyzer.git
+[submodule "cclyzer/ubuntu-14.04/cclyzer"]
+	path = cclyzer/ubuntu-14.04/cclyzer
+	url = git@github.com:plast-lab/cclyzer.git
