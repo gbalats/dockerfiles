@@ -1,19 +1,21 @@
 FROM ubuntu:14.04
 
 ENV LB_VERSION 3.10.14
-ENV LLVM_VERSION 3.7
-ENV EDITOR emacs
+
 ENV LLVM_HOME /opt/llvm
+ENV LLVM_VERSION 3.8.0
+ENV LLVM_ARCHIVE clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+
+ENV EDITOR emacs
+ENV TERM xterm-256color
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
+
 ENV LOGICBLOX_HOME /opt/logicblox
 ENV LB_CONNECTBLOX_ENABLE_ADMIN 1
 ENV LB_PAGER_FORCE_START true
 ENV LB_MEM_NOWARN true
 ENV PATH $LOGICBLOX_HOME/bin:$LLVM_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH $LOGICBLOX_HOME/bin
-
-ADD logicblox-${LB_VERSION}.tgz /opt/
-ADD llvm-${LLVM_VERSION}.tgz /opt/
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -34,6 +36,7 @@ RUN apt-get update && apt-get install -y \
     protobuf-compiler \
     openjdk-7-jdk \
     ssh-client \
+    xz-utils \
     bash-completion \
  && rm -rf /var/lib/apt/lists/*
 
@@ -48,8 +51,17 @@ COPY .emacs .emacs
 COPY cclyzer cclyzer
 
 USER root
-RUN chown -R cclyzer:cclyzer /home/cclyzer/* /home/cclyzer/.*
+RUN chown -R cclyzer:cclyzer .* *
+
+
+WORKDIR /tmp
+
+ADD logicblox-${LB_VERSION}.tgz /opt/
+
+RUN mkdir $LLVM_HOME
+ADD http://llvm.org/releases/${LLVM_VERSION}/${LLVM_ARCHIVE} .
+RUN tar xf $LLVM_ARCHIVE -C $LLVM_HOME --strip-components=1
+RUN rm $LLVM_ARCHIVE
 
 USER cclyzer
-
-ENV TERM xterm-256color
+WORKDIR /home/cclyzer
