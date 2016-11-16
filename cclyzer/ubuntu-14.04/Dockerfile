@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     libprotobuf-dev \
     libprotoc-dev \
     protobuf-compiler \
+    libtool \
     openjdk-7-jdk \
     ssh-client \
     xz-utils \
@@ -62,6 +63,9 @@ RUN mkdir $LLVM_HOME
 ADD http://llvm.org/releases/${LLVM_VERSION}/${LLVM_ARCHIVE} .
 RUN tar xf $LLVM_ARCHIVE -C $LLVM_HOME --strip-components=1
 RUN rm $LLVM_ARCHIVE
+
+WORKDIR /lib/x86_64-linux-gnu
+RUN ln -s libtinfo.so.5 libtinfo.so
 
 USER cclyzer
 WORKDIR /home/cclyzer
