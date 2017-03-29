@@ -49,12 +49,14 @@ USER cclyzer
 WORKDIR /home/cclyzer
 
 COPY .emacs .emacs
-COPY cclyzer cclyzer
+
+ENV CCLYZER_VERSION 1.1.4
+
+RUN git clone https://github.com/plast-lab/cclyzer.git \
+    && cd cclyzer \
+    && git checkout v${CCLYZER_VERSION}
 
 USER root
-RUN chown -R cclyzer:cclyzer .* *
-
-
 WORKDIR /tmp
 
 ADD logicblox-${LB_VERSION}.tgz /opt/
@@ -67,5 +69,11 @@ RUN rm $LLVM_ARCHIVE
 WORKDIR /lib/x86_64-linux-gnu
 RUN ln -s libtinfo.so.5 libtinfo.so
 
+# Setup cclyzer
 USER cclyzer
+WORKDIR /home/cclyzer/cclyzer
+RUN virtualenv venv
+RUN make
+RUN ["/bin/bash", "-c", "source venv/bin/activate && make install"]
+
 WORKDIR /home/cclyzer

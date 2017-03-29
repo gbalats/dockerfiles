@@ -4,6 +4,3 @@
 [submodule "cclyzer/ubuntu-14.04/cclyzer"]
 	path = cclyzer/ubuntu-14.04/cclyzer
 	url = git@github.com:plast-lab/cclyzer.git
-[submodule "cclyzer/ubuntu-16.04/cclyzer"]
-	path = cclyzer/ubuntu-16.04/cclyzer
-	url = git@github.com:plast-lab/cclyzer.git
